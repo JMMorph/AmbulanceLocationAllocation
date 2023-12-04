@@ -1,0 +1,11 @@
+### Parameter file 
+# name       	switch           type 	values               [conditions (using R syntax)]
+crossover    	"--cr "		   c	(un,hun)
+mutation     	"--mu "            c	(bf,bfo)
+allocation   	"--a "             c	(cl,ur,urc)
+repair	     	"--rep "           c	(rn,rm)
+population   	"--pop "           c	(20,50,100,200)
+offsprings	"--dec "           c	(25,50,75)
+prob_crossover	"--prob_cr "       c 	(0.5,0.75,0.9,0.99)
+prob_mutation	"--prob_mu "       c	(0.5,0.25,0.1,0.01)
+prob_initial	"--prob_ini "      c	(0.25,0.1,0.01)

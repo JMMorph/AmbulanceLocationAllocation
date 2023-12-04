@@ -1,0 +1,478 @@
+cic@cic-Alienware-Aurora-R8:~/Tesis/Source/ajuste$ R
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library("irace")
+> scenario <- readScenario(filename = "scenario.txt", scenario = defaultScenario())
+> irace.main(scenario = scenario)
+# 2023-11-15 10:39:18 CST: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 2
+# nbIterations: 5
+# minNbSurvival: 5
+# nbParameters: 9
+# seed: 1
+# confidence level: 0.95
+# budget: 5000
+# mu: 5
+# deterministic: FALSE
+
+# 2023-11-15 10:39:18 CST: Iteration 1 of 5
+# experimentsUsedSoFar: 0
+# remainingBudget: 5000
+# currentBudget: 1000
+# nbConfigurations: 166
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|        166|         44|    0.2981887703|        166|04:17:42|   NA|  NA|    NA|
+|x|          2|        166|         44|    0.3848321819|        332|04:21:11|+0.36|0.68|0.7688|
+|x|          3|        166|         44|    0.4337004141|        498|03:59:26|+0.50|0.67|0.5716|
+|x|          4|        166|          2|    0.4586313281|        664|04:26:54|+0.54|0.66|0.5524|
+|-|          5|         34|          2|    0.4555946886|        830|03:55:45|+0.20|0.36|0.9913|
+|-|          6|         11|        129|    0.4737245998|        864|01:04:09|-0.04|0.14|0.9557|
+|=|          7|         11|          2|    0.4700023059|        875|00:43:27|-0.03|0.12|0.9155|
+|=|          8|         11|          2|    0.4775225759|        886|00:43:47|-0.01|0.11|0.8594|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:           2    mean value:     0.4775225759
+Description of the best-so-far configuration:
+  .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+2    2       hun       bf         ur     rm        200         75           0.75           0.1         0.01       NA
+
+# 2023-11-16 10:11:44 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+2         hun       bf         ur     rm        200         75           0.75           0.1         0.01
+129        un      bfo         ur     rm        200         50            0.5          0.01         0.25
+157       hun      bfo         ur     rm        200         50           0.75          0.25         0.01
+44        hun       bf         ur     rm        100         75           0.75          0.01         0.25
+21         un       bf         ur     rm        100         75            0.5           0.5          0.1
+# 2023-11-16 10:11:44 CST: Iteration 2 of 5
+# experimentsUsedSoFar: 886
+# remainingBudget: 4114
+# currentBudget: 1028
+# nbConfigurations: 118
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          9|        118|         21|    0.4397645904|        118|04:40:43|   NA|  NA|    NA|
+|x|          8|        118|         21|    0.4850401585|        231|04:17:35|+0.51|0.76|0.3126|
+|x|          6|        118|         21|    0.4982435489|        344|03:27:34|+0.48|0.66|0.4369|
+|x|          4|        118|         21|    0.5028700836|        457|04:14:32|+0.51|0.63|0.4332|
+|-|          2|         32|         21|    0.4967501794|        570|04:08:35|+0.07|0.25|1.0531|
+|=|          1|         32|         21|    0.4672821005|        597|01:14:47|+0.07|0.22|1.0331|
+|-|          5|         12|         21|    0.4640272434|        624|01:12:52|+0.01|0.15|0.9228|
+|=|          7|         12|          2|    0.4688453898|        631|00:25:22|-0.00|0.12|0.9496|
+|=|          3|         12|          2|    0.4755319523|        638|00:22:05|-0.00|0.11|0.9567|
+|=|         10|         12|          2|    0.4815758630|        650|00:46:50|+0.03|0.12|0.9378|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:           2    mean value:     0.4815758630
+Description of the best-so-far configuration:
+  .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+2    2       hun       bf         ur     rm        200         75           0.75           0.1         0.01       NA
+
+# 2023-11-17 11:02:45 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+2         hun       bf         ur     rm        200         75           0.75           0.1         0.01
+129        un      bfo         ur     rm        200         50            0.5          0.01         0.25
+21         un       bf         ur     rm        100         75            0.5           0.5          0.1
+173        un      bfo         cl     rm        200         75           0.75           0.1          0.1
+157       hun      bfo         ur     rm        200         50           0.75          0.25         0.01
+# 2023-11-17 11:02:45 CST: Iteration 3 of 5
+# experimentsUsedSoFar: 1536
+# remainingBudget: 3464
+# currentBudget: 1154
+# nbConfigurations: 109
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         11|        109|        280|    0.4727085386|        109|05:16:25|   NA|  NA|    NA|
+|x|          3|        109|        280|    0.5015784016|        213|04:21:43|+0.54|0.77|0.6361|
+|x|          9|        109|        280|    0.4831781373|        317|05:01:42|+0.49|0.66|0.6456|
+|x|          1|        109|        280|    0.4359207483|        421|04:26:00|+0.48|0.61|0.7018|
+|-|          6|         33|        355|    0.4563398574|        525|03:59:27|-0.01|0.19|1.0469|
+|=|          5|         33|        355|    0.4542397860|        553|01:35:55|-0.01|0.16|1.0312|
+|=|          4|         33|        298|    0.4609103047|        581|01:48:07|+0.03|0.17|1.0035|
+|=|          7|         33|        298|    0.4646270921|        609|01:55:09|+0.05|0.17|0.9901|
+|=|          8|         33|        280|    0.4752259478|        637|02:01:28|+0.03|0.14|0.9737|
+|=|          2|         33|        355|    0.4761800388|        665|01:57:31|+0.04|0.14|0.9581|
+|-|         10|         19|        355|    0.4796727619|        693|02:01:11|-0.04|0.06|0.9577|
+|=|         12|         19|        355|    0.4832014100|        712|01:19:27|-0.03|0.06|0.9514|
+|=|         13|         19|        365|    0.4911812551|        731|01:08:03|-0.02|0.06|0.9476|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         365    mean value:     0.4911812551
+Description of the best-so-far configuration:
+    .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+365  365        un      bfo         ur     rm        200         50            0.5           0.5         0.25      129
+
+# 2023-11-18 23:55:01 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+365        un      bfo         ur     rm        200         50            0.5           0.5         0.25
+355        un       bf         ur     rm        200         50            0.5          0.01         0.01
+2         hun       bf         ur     rm        200         75           0.75           0.1         0.01
+129        un      bfo         ur     rm        200         50            0.5          0.01         0.25
+302        un       bf         ur     rm        100         75           0.75          0.25          0.1
+# 2023-11-18 23:55:01 CST: Iteration 4 of 5
+# experimentsUsedSoFar: 2267
+# remainingBudget: 2733
+# currentBudget: 1366
+# nbConfigurations: 102
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         14|        102|        355|    0.5081301081|        102|06:03:26|   NA|  NA|    NA|
+|x|         10|        102|        355|    0.5113650503|        199|05:28:56|+0.63|0.82|0.3019|
+|x|         11|        102|        355|    0.5049919944|        296|05:27:30|+0.58|0.72|0.4399|
+|x|         12|        102|        389|    0.5136495090|        393|05:09:47|+0.50|0.62|0.6155|
+|-|          5|         31|        463|    0.4938196366|        490|04:42:16|-0.10|0.12|1.0372|
+|=|          2|         31|        355|    0.4917287576|        516|01:50:19|-0.03|0.14|0.9869|
+|=|          7|         31|        463|    0.4903210365|        542|01:55:24|-0.02|0.13|0.9893|
+|=|          1|         31|        355|    0.4695405059|        568|01:47:36|+0.00|0.13|0.9774|
+|=|          3|         31|        355|    0.4758901284|        594|01:40:53|+0.04|0.15|0.9562|
+|=|          9|         31|        355|    0.4731977625|        620|01:52:37|+0.03|0.13|0.9559|
+|=|          4|         31|        355|    0.4774857033|        646|01:50:58|+0.02|0.11|0.9676|
+|=|          8|         31|        355|    0.4819900541|        672|02:02:19|+0.02|0.11|0.9521|
+|=|          6|         31|        355|    0.4851190022|        698|01:41:14|+0.03|0.10|0.9452|
+|=|         13|         31|        416|    0.4905788953|        724|01:40:37|+0.03|0.10|0.9389|
+|=|         15|         31|        355|    0.4843676362|        755|01:51:15|+0.03|0.09|0.9483|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         355    mean value:     0.4843676362
+Description of the best-so-far configuration:
+    .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+355  355        un       bf         ur     rm        200         50            0.5          0.01         0.01      129
+
+# 2023-11-20 21:00:15 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+355        un       bf         ur     rm        200         50            0.5          0.01         0.01
+416       hun      bfo         ur     rm        200         50            0.5          0.01         0.25
+365        un      bfo         ur     rm        200         50            0.5           0.5         0.25
+463       hun       bf         ur     rm        200         50            0.5          0.01         0.01
+432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25
+# 2023-11-20 21:00:15 CST: Iteration 5 of 5
+# experimentsUsedSoFar: 3022
+# remainingBudget: 1978
+# currentBudget: 1978
+# nbConfigurations: 128
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         16|        128|        559|    0.4382079552|        128|06:54:04|   NA|  NA|    NA|
+|x|         12|        128|        496|    0.4689351475|        251|06:19:28|+0.30|0.65|0.9967|
+|x|          9|        128|        496|    0.4614086233|        374|06:36:06|+0.38|0.59|0.7470|
+|x|          2|        128|        559|    0.4707244469|        497|06:35:49|+0.36|0.52|0.6131|
+|-|          5|         63|        559|    0.4654278227|        620|05:36:05|-0.08|0.13|1.0482|
+|=|          3|         63|        499|    0.4747116678|        678|03:16:11|-0.02|0.15|0.9985|
+|=|          4|         63|        499|    0.4811401095|        736|03:40:34|-0.00|0.14|0.9964|
+|=|         10|         63|        559|    0.4928623935|        794|03:56:08|+0.02|0.15|0.9564|
+|-|         15|         47|        559|    0.4871598505|        852|03:12:08|-0.03|0.09|0.9545|
+|=|         14|         47|        355|    0.4834610923|        894|02:57:49|+0.01|0.11|0.9154|
+|=|          8|         47|        499|    0.4937538416|        936|03:04:47|+0.00|0.09|0.8962|
+|=|         11|         47|        499|    0.4931752942|        978|02:58:22|+0.01|0.09|0.8605|
+|-|          1|         31|        432|    0.4772267726|       1020|02:44:44|-0.01|0.07|0.9424|
+|=|          6|         31|        432|    0.4832494559|       1046|01:33:32|-0.01|0.06|0.9530|
+|=|         13|         31|        432|    0.4859337643|       1072|01:36:48|-0.01|0.06|0.9459|
+|=|          7|         31|        499|    0.4891205265|       1098|01:49:41|-0.02|0.04|0.9609|
+|=|         17|         31|        432|    0.4895541117|       1129|02:13:38|-0.03|0.03|0.9501|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         432    mean value:     0.4895541117
+Description of the best-so-far configuration:
+    .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+432  432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25      365
+
+# 2023-11-23 14:06:18 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25
+499        un       bf         ur     rm        200         50           0.75           0.5         0.25
+355        un       bf         ur     rm        200         50            0.5          0.01         0.01
+523        un       bf         ur     rm        200         50            0.5           0.5          0.1
+416       hun      bfo         ur     rm        200         50            0.5          0.01         0.25
+# 2023-11-23 14:06:18 CST: Iteration 6 of 6
+# experimentsUsedSoFar: 4151
+# remainingBudget: 849
+# currentBudget: 849
+# nbConfigurations: 51
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         18|         51|        432|    0.2901610760|         51|02:57:44|   NA|  NA|    NA|
+|x|         17|         51|        432|    0.3919624260|         97|02:52:02|+0.53|0.77|1.0626|
+|x|         15|         51|        432|    0.4095727106|        143|02:22:37|+0.50|0.67|0.9240|
+|x|         13|         51|        638|    0.4424060009|        189|02:16:58|+0.45|0.58|0.8307|
+|-|          4|         24|        625|    0.4612335898|        235|02:43:47|-0.06|0.16|1.0246|
+|=|          3|         24|        605|    0.4759314466|        254|01:11:55|-0.08|0.10|1.0267|
+|=|         11|         24|        432|    0.4697490136|        273|01:18:07|-0.04|0.11|1.0034|
+|=|         10|         24|        432|    0.4780602521|        292|01:21:12|-0.04|0.09|0.9798|
+|=|         16|         24|        625|    0.4822846761|        311|01:18:57|-0.00|0.11|0.9392|
+|=|         14|         24|        432|    0.4803692378|        330|01:21:01|-0.00|0.10|0.8960|
+|=|          6|         24|        625|    0.4906439037|        349|01:10:55|-0.03|0.06|0.9388|
+|=|          1|         24|        625|    0.4765594681|        368|01:16:01|-0.00|0.08|0.9222|
+|=|          5|         24|        625|    0.4753670000|        387|01:07:28|-0.02|0.06|0.9303|
+|=|          8|         24|        625|    0.4792042743|        406|01:23:35|-0.01|0.06|0.9490|
+|=|          9|         24|        625|    0.4769028477|        425|01:19:10|+0.01|0.08|0.9207|
+|=|          7|         24|        625|    0.4792649475|        444|01:19:48|-0.01|0.05|0.8947|
+|=|         12|         24|        625|    0.4803614119|        463|01:17:02|+0.00|0.06|0.8966|
+|=|          2|         24|        625|    0.4831753003|        482|01:18:53|-0.01|0.04|0.8735|
+|=|         19|         24|        625|    0.4825374499|        506|01:40:25|-0.01|0.04|0.8851|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         625    mean value:     0.4825374499
+Description of the best-so-far configuration:
+    .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+625  625        un       bf         ur     rm        200         50            0.5          0.25          0.1      523
+
+# 2023-11-24 21:44:04 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+625        un       bf         ur     rm        200         50            0.5          0.25          0.1
+432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25
+499        un       bf         ur     rm        200         50           0.75           0.5         0.25
+638        un       bf         ur     rm        200         50            0.5          0.25         0.01
+617        un      bfo         ur     rm        200         50            0.5           0.5          0.1
+# 2023-11-24 21:44:04 CST: Iteration 7 of 7
+# experimentsUsedSoFar: 4657
+# remainingBudget: 343
+# currentBudget: 343
+# nbConfigurations: 21
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         20|         21|        625|    0.5264018655|         21|00:57:35|   NA|  NA|    NA|
+|x|          4|         21|        655|    0.5115065352|         37|00:42:11|+0.78|0.89|0.1706|
+|x|          8|         21|        655|    0.5174443344|         53|00:46:01|+0.75|0.83|0.2269|
+|x|         13|         21|        625|    0.5239695280|         69|00:28:58|+0.70|0.78|0.3334|
+|-|         16|          7|        625|    0.5068915706|         85|00:42:56|+0.17|0.34|0.9449|
+|=|          1|          7|        625|    0.4760147549|         87|00:08:01|+0.07|0.22|0.9677|
+|=|          2|          7|        625|    0.4838714190|         89|00:08:13|-0.03|0.11|0.9864|
+|=|         14|          7|        625|    0.4901193011|         91|00:08:25|-0.05|0.08|0.9624|
+|=|         15|          7|        625|    0.4849422534|         93|00:06:47|-0.02|0.09|0.9495|
+|=|          7|          7|        625|    0.4879176724|         95|00:08:10|-0.03|0.07|0.9381|
+|=|          5|          7|        625|    0.4854758279|         97|00:06:53|-0.06|0.04|0.9322|
+|=|         10|          7|        625|    0.4896673929|         99|00:08:18|-0.04|0.05|0.9085|
+|=|          6|          7|        625|    0.4922057765|        101|00:06:46|-0.01|0.07|0.9036|
+|=|         11|          7|        625|    0.4925540133|        103|00:08:47|-0.02|0.05|0.9065|
+|=|         12|          7|        625|    0.4929107352|        105|00:07:58|-0.01|0.05|0.9051|
+|=|          3|          7|        625|    0.4972887327|        107|00:06:11|-0.04|0.02|0.9084|
+|=|         18|          7|        625|    0.4852476729|        109|00:07:57|-0.03|0.03|0.8972|
+|=|          9|          7|        625|    0.4829940730|        111|00:08:21|-0.04|0.02|0.8935|
+|=|         17|          7|        625|    0.4854503827|        113|00:09:00|-0.04|0.02|0.8830|
+|=|         19|          7|        625|    0.4847306706|        115|00:09:10|-0.04|0.01|0.8859|
+|=|         21|          7|        625|    0.4865371330|        122|00:22:52|-0.04|0.01|0.8783|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         625    mean value:     0.4865371330
+Description of the best-so-far configuration:
+    .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+625  625        un       bf         ur     rm        200         50            0.5          0.25          0.1      523
+
+# 2023-11-25 03:43:45 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+625        un       bf         ur     rm        200         50            0.5          0.25          0.1
+432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25
+617        un      bfo         ur     rm        200         50            0.5           0.5          0.1
+499        un       bf         ur     rm        200         50           0.75           0.5         0.25
+655        un       bf         ur     rm        200         50            0.5           0.5          0.1
+# 2023-11-25 03:43:45 CST: Iteration 8 of 8
+# experimentsUsedSoFar: 4779
+# remainingBudget: 221
+# currentBudget: 221
+# nbConfigurations: 14
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         22|         14|        617|    0.2934653116|         14|00:41:54|   NA|  NA|    NA|
+|x|          2|         14|        617|    0.3779455133|         23|00:24:02|+0.07|0.54|1.0080|
+|x|          3|         14|        617|    0.4389860749|         32|00:19:55|+0.32|0.55|0.8129|
+|x|         16|         14|        655|    0.4489515003|         41|00:23:44|+0.40|0.55|0.7257|
+|-|          6|          7|        655|    0.4636944762|         50|00:13:51|-0.01|0.19|0.8696|
+|=|         14|          7|        499|    0.4685218289|         52|00:08:32|+0.02|0.19|0.8012|
+|=|         15|          7|        625|    0.4794947885|         54|00:06:53|-0.04|0.11|0.8897|
+|=|         18|          7|        625|    0.4561317793|         56|00:06:56|+0.03|0.15|0.8210|
+|=|         21|          7|        625|    0.4635245127|         58|00:04:26|+0.04|0.15|0.7912|
+|=|         13|          7|        625|    0.4694386994|         60|00:05:31|+0.05|0.14|0.8092|
+|=|         17|          7|        625|    0.4749137227|         62|00:08:35|+0.08|0.16|0.7999|
+|=|          9|          7|        625|    0.4723944855|         64|00:08:17|+0.10|0.17|0.7641|
+|-|         19|          6|        625|    0.4722915360|         66|00:07:50|-0.03|0.05|0.8256|
+|=|          8|          6|        625|    0.4763484863|         67|00:04:12|-0.00|0.07|0.8206|
+|=|          7|          6|        625|    0.4789050168|         68|00:03:59|-0.03|0.04|0.8468|
+|=|         20|          6|        625|    0.4818735698|         69|00:03:40|-0.02|0.05|0.8480|
+|=|          5|          6|        625|    0.4806490882|         70|00:03:21|-0.02|0.04|0.8391|
+|=|         12|          6|        625|    0.4816077412|         71|00:03:48|+0.00|0.06|0.8217|
+|=|         10|          6|        625|    0.4844586289|         72|00:04:15|+0.02|0.07|0.8139|
+|=|          1|          6|        625|    0.4763172313|         73|00:03:25|+0.03|0.08|0.7984|
+|=|          4|          6|        625|    0.4782888406|         74|00:03:48|+0.03|0.08|0.8095|
+|=|         11|          6|        625|    0.4791430338|         75|00:04:05|+0.03|0.07|0.8091|
+|=|         23|          6|        625|    0.4808017084|         81|00:23:28|+0.04|0.08|0.8094|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         625    mean value:     0.4808017084
+Description of the best-so-far configuration:
+    .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+625  625        un       bf         ur     rm        200         50            0.5          0.25          0.1      523
+
+# 2023-11-25 07:42:24 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+625        un       bf         ur     rm        200         50            0.5          0.25          0.1
+432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25
+617        un      bfo         ur     rm        200         50            0.5           0.5          0.1
+499        un       bf         ur     rm        200         50           0.75           0.5         0.25
+655        un       bf         ur     rm        200         50            0.5           0.5          0.1
+# 2023-11-25 07:42:24 CST: Iteration 9 of 9
+# experimentsUsedSoFar: 4860
+# remainingBudget: 140
+# currentBudget: 140
+# nbConfigurations: 10
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . All alive configurations are elite and nothing is discarded
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         24|         10|        499|    0.4429674948|         10|00:38:44|   NA|  NA|    NA|
+|x|         15|         10|        432|    0.4447963210|         15|00:15:06|-0.88|0.06|1.5330|
+|x|         14|         10|        432|    0.4743551714|         20|00:18:38|-0.26|0.16|1.2149|
+|x|          4|         10|        432|    0.4854268249|         25|00:17:28|-0.19|0.11|1.1268|
+|=|         20|         10|        655|    0.4975043674|         30|00:16:33|-0.05|0.16|1.0042|
+|=|          8|         10|        625|    0.5017667826|         35|00:19:26|+0.02|0.19|0.9735|
+|=|         12|         10|        625|    0.5012150768|         40|00:17:37|+0.01|0.15|0.9662|
+|=|         13|         10|        625|    0.5038964896|         45|00:12:21|+0.03|0.15|0.9494|
+|=|         11|         10|        625|    0.5031392232|         50|00:17:58|+0.05|0.15|0.9201|
+|=|         21|         10|        625|    0.5050919388|         55|00:14:24|+0.07|0.16|0.9055|
+|=|         10|         10|        625|    0.5078812724|         60|00:19:15|+0.08|0.16|0.8844|
+|-|         18|          9|        625|    0.4899403926|         65|00:17:07|-0.05|0.04|0.9091|
+|=|          2|          9|        625|    0.4930997011|         69|00:16:13|-0.06|0.02|0.9304|
+|=|          6|          9|        625|    0.4952116067|         73|00:11:37|-0.04|0.03|0.9425|
+|=|         23|          9|        625|    0.4966836695|         77|00:14:45|-0.03|0.04|0.9420|
+|=|          1|          9|        625|    0.4857428574|         81|00:15:13|-0.02|0.04|0.9308|
+|=|         19|          9|        625|    0.4848789330|         85|00:16:44|-0.03|0.03|0.9249|
+|=|         22|          9|        625|    0.4759338230|         89|00:14:29|-0.02|0.03|0.9145|
+|=|         17|          9|        625|    0.4787617247|         93|00:14:29|-0.02|0.04|0.8976|
+|=|          5|          9|        625|    0.4778765076|         97|00:13:01|-0.03|0.02|0.8969|
+|=|          7|          9|        625|    0.4796298379|        101|00:16:32|-0.03|0.02|0.8980|
+|=|         16|          9|        625|    0.4777639244|        105|00:17:19|-0.02|0.03|0.9062|
+|=|          3|          9|        625|    0.4814680449|        109|00:15:29|-0.03|0.02|0.9053|
+|=|          9|          9|        625|    0.4799353295|        113|00:16:08|-0.03|0.01|0.9023|
+|=|         25|          9|        625|    0.4819677163|        122|00:39:16|-0.03|0.01|0.8983|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         625    mean value:     0.4819677163
+Description of the best-so-far configuration:
+    .ID. crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial .PARENT.
+625  625        un       bf         ur     rm        200         50            0.5          0.25          0.1      523
+
+# 2023-11-25 15:08:30 CST: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+625        un       bf         ur     rm        200         50            0.5          0.25          0.1
+499        un       bf         ur     rm        200         50           0.75           0.5         0.25
+432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25
+655        un       bf         ur     rm        200         50            0.5           0.5          0.1
+617        un      bfo         ur     rm        200         50            0.5           0.5          0.1
+# 2023-11-25 15:08:30 CST: Stopped because there is not enough budget left to race more than the minimum (5)
+# You may either increase the budget or set 'minNbSurvival' to a lower value
+# Iteration: 10
+# nbIterations: 10
+# experimentsUsedSoFar: 4982
+# timeUsed: 0
+# remainingBudget: 18
+# currentBudget: 18
+# number of elites: 5
+# nbConfigurations: 5
+# Total CPU user time: 880930.4, CPU sys time: 4668.039, Wall-clock time: 880152.2
+# Best configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    crossover mutation allocation repair population offsprings prob_crossover prob_mutation prob_initial
+625        un       bf         ur     rm        200         50            0.5          0.25          0.1
+499        un       bf         ur     rm        200         50           0.75           0.5         0.25
+432       hun      bfo         ur     rm        200         50            0.5           0.5         0.25
+655        un       bf         ur     rm        200         50            0.5           0.5          0.1
+617        un      bfo         ur     rm        200         50            0.5           0.5          0.1
+# Best configurations as commandlines (first number is the configuration ID; same order as above):
+625  --cr un --mu bf --a ur --rep rm --pop 200 --dec 50 --prob_cr 0.5 --prob_mu 0.25 --prob_ini 0.1
+499  --cr un --mu bf --a ur --rep rm --pop 200 --dec 50 --prob_cr 0.75 --prob_mu 0.5 --prob_ini 0.25
+432  --cr hun --mu bfo --a ur --rep rm --pop 200 --dec 50 --prob_cr 0.5 --prob_mu 0.5 --prob_ini 0.25
+655  --cr un --mu bf --a ur --rep rm --pop 200 --dec 50 --prob_cr 0.5 --prob_mu 0.5 --prob_ini 0.1
+617  --cr un --mu bfo --a ur --rep rm --pop 200 --dec 50 --prob_cr 0.5 --prob_mu 0.5 --prob_ini 0.1
+
+
+# Testing of elite configurations: 1 
+# Testing iteration configurations: FALSE 
+# 2023-11-25 15:08:30 CST: No test instances, skip testing
+

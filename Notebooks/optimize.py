@@ -311,7 +311,7 @@ def parse_input(entrada):
 
 
 
-def optimizar(t_max, entrada, problem, algorithm, termination, seed):
+def optimizar(t_max, entrada, problem, algorithm, termination, seed, sh = False):
     
     try:
         # Si la función tarda demasiado tiempo, se activará la alarma
@@ -321,7 +321,7 @@ def optimizar(t_max, entrada, problem, algorithm, termination, seed):
                algorithm = algorithm,
                copy_algorithm = True,
                seed = seed,
-               save_history = False,
+               save_history = sh,
                termination = termination,
                verbose = False
                )
@@ -345,7 +345,7 @@ def manejador_alarma(signum, frame):
 
 
 
-def exec_algorithm(entrada, returnData = False, timeout = 6):
+def exec_algorithm(entrada, returnData = False, timeout = 6, sh = False):
     # -----------------------------------------------------------------
     # PARÁMETROS DE ENTRADA
     # -----------------------------------------------------------------
@@ -447,7 +447,8 @@ def exec_algorithm(entrada, returnData = False, timeout = 6):
                     problem, 
                     algorithm, 
                     termination, 
-                    seed)
+                    seed,
+                    sh = sh)
     
     # Si la ejecución se completó, se calcula el hipervolumen
     if res != -1 and type(res.F) != type(None):

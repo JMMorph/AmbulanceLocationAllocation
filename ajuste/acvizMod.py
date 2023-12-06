@@ -723,7 +723,7 @@ def __monitor(iracelog, typeResult = 'rdev', showElites = True, showInstances = 
                     fig.subplots_adjust(top = 0.90)
                     # Save plot in a buffer
                     buf = BytesIO()
-                    fig.savefig(buf, format = 'png', dpi = 300)
+                    fig.savefig(buf, format = 'png', dpi = 600)
                     # Read image to store in a PIL image object
                     buf.seek(0)
                     img = Image.open(buf).convert("RGB")
@@ -793,8 +793,8 @@ def getPlot(iracelog, typeResult = 'rdev', showElites = True, showInstances = Tr
             print('> cat only exports training data (remove --testing option)')
     if exportPlot: # Export plot
         if not os.path.exists('./export'): os.mkdir('./export')
-        plt.savefig('./export/' + output + '.pdf', format = 'pdf')
-        plt.savefig('./export/' + output + '.png', format = 'png')
+        plt.savefig('./export/' + output + '.pdf', format = 'pdf', dpi = 600)
+        plt.savefig('./export/' + output + '.png', format = 'png', dpi = 600)
         print('> Plot exported to export/' + output + '.pdf')
         print('> Plot exported to export/' + output + '.png')
     else: # Show plot

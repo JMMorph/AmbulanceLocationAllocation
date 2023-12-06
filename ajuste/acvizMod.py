@@ -128,7 +128,8 @@ def __plotTraining(data, typeResult, restarts, showElites, showInstances, pconfi
     ax = fig.add_subplot(1, 1, 1, label = 'plot_evolution')
     ax.set_xlim((data['xaxis'].min(), data['xaxis'].max()))
     if logScale: ax.set_yscale('log')
-    plt.xlabel('Candidate evaluations' if not overTime else 'Cumulative running time [in seconds]')
+    #plt.xlabel('Candidate evaluations' if not overTime else 'Cumulative running time [in seconds]')
+    plt.xlabel('Evaluaciones candidatas' if not overTime else 'Tiempo de ejecución acumulado [en segundos]')
 
     # Define y label according to the type of results
     if typeResult == 'rdev': plt.ylabel('Relative deviation')
@@ -168,12 +169,14 @@ def __plotTraining(data, typeResult, restarts, showElites, showInstances, pconfi
         legendElements.append(copy(plt.scatter(data[data['type'] == 'elite']['xaxis'], data[data['type'] == 'elite']['yaxis'], alpha = min(alpha + 0.2, 1), c = data[data['type'] == 'elite']['color'], edgecolors = 'black', marker = 'o', linewidth = 0.7, s = 24, zorder = 3, clip_on = False)))
         legendElements.append(copy(plt.scatter(data[data['type'] == 'final']['xaxis'], data[data['type'] == 'final']['yaxis'], alpha = min(alpha + 0.2, 1), c = data[data['type'] == 'final']['color'], edgecolors = 'black', marker = 'D', linewidth = 0.7, s = 22, zorder = 3, clip_on = False)))
         legendElements.append(copy(plt.scatter(data[data['type'] == 'best']['xaxis'], data[data['type'] == 'best']['yaxis'], alpha = min(alpha + 0.2, 1), c = data[data['type'] == 'best']['color'], edgecolors = 'black', marker = '*', linewidth = 0.7, s = 70, zorder = 3, clip_on = False)))
-        legendDescriptions.extend(['regular config.', 'elite config.', 'final elite config.', 'best found config.'])
+        #legendDescriptions.extend(['regular config.', 'elite config.', 'final elite config.', 'best found config.'])
+        legendDescriptions.extend(['config. regular', 'config. élite', 'config. de élite final', 'mejor config. encontrada'])
     else:
         # Otherwise, all executions have the same marker
         plotData.append(data)
         legendElements.append(copy(plt.scatter(data['xaxis'], data['yaxis'], alpha = alpha, c = data['color'], marker = 'x', linewidth = 0.5, s = 16, zorder = 3, clip_on = False)))
-        legendDescriptions.append('execution')
+        #legendDescriptions.append('execution')
+        legendDescriptions.append('ejecución')
     if showInstances:
         for element in legendElements: element.set_edgecolor('black'); element.set_facecolor('grey')
 
@@ -207,11 +210,13 @@ def __plotTraining(data, typeResult, restarts, showElites, showInstances, pconfi
         # Add legend entries
         if not restart and not legendRegular:
             legendElements.append(line)
-            legendDescriptions.append('iteration')
+            #legendDescriptions.append('iteration')
+            legendDescriptions.append('iteración')
             legendRegular = True
         if restart and not legendRestart:
             legendElements.append(line)
-            legendDescriptions.append('iteration (restart)')
+            #legendDescriptions.append('iteration (restart)')
+            legendDescriptions.append('iteratción (reinicio)')
             legendRestart = True
     # Set the xticks according to the beginning of each iteration
     ax.set_xticks(iterationPoints + [ax.get_xlim()[1]])
@@ -223,13 +228,15 @@ def __plotTraining(data, typeResult, restarts, showElites, showInstances, pconfi
     for i in range(len(iterations)):
         medianRegular = mediansRegular[mediansRegular['iteration'] == iterations[i]]['median'].unique()[0]
         medianElite = mediansElite[mediansElite['iteration'] == iterations[i]]['median'].unique()[0]
-        plt.plot([iterationPoints[i], iterationPoints[i + 1]], [medianRegular, medianRegular], linestyle = '-', color = '#FF8C00', linewidth = 1.8, zorder = 0)
-        plt.plot([iterationPoints[i], iterationPoints[i + 1]], [medianElite, medianElite], linestyle = '-', color = '#800080', linewidth = 1.8, zorder = 0)
+        #plt.plot([iterationPoints[i], iterationPoints[i + 1]], [medianRegular, medianRegular], linestyle = '-', color = '#FF8C00', linewidth = 1.8, zorder = 0)
+        #plt.plot([iterationPoints[i], iterationPoints[i + 1]], [medianElite, medianElite], linestyle = '-', color = '#800080', linewidth = 1.8, zorder = 0)
     # Add legends for both types of horizontal lines
     legendElements.append(mlines.Line2D([], [], color='#FF8C00', linewidth = 1.8))
-    legendDescriptions.append('median iteration')
+    #legendDescriptions.append('median iteration')
+    legendDescriptions.append('iteración mediana')
     legendElements.append(mlines.Line2D([], [], color='#800080', linewidth = 1.8))
-    legendDescriptions.append('median elites')
+    #legendDescriptions.append('median elites')
+    legendDescriptions.append('mediana de élites')
     
     # Identify configurations of the pconfig% best executions of each iteration
     if pconfig > 0:
@@ -252,7 +259,8 @@ def __plotTraining(data, typeResult, restarts, showElites, showInstances, pconfi
     ax2 = ax.twiny()
     ax2.set_xticks(iterationPoints[1:])
     ax2.set_xticklabels(instancesSoFar)
-    ax2.set_xlabel('Instances evaluated')
+    #ax2.set_xlabel('Instances evaluated')
+    ax2.set_xlabel('Instancias evaluadas')
     ax2.set_xlim((data['xaxis'].min(), data['xaxis'].max()))
     ax2.tick_params(axis = 'both', which = 'major', labelsize = 9)
     ax.set_zorder(ax2.get_zorder() + 1)

@@ -6,6 +6,7 @@ from osmnx import utils
 import geopandas as gpd
 import networkx as nx
 import osmnx as ox
+import operator
 import cugraph
 import pickle
 import os
@@ -1651,6 +1652,9 @@ def get_route_from_df(df, id):
 
 
 
+
+
+
  
 # Función para obtener la ruta más corta desde un diccionario de predecesores,
 # normalmente obtenido después de aplicar el algoritmo de Dijkstra multi-origen
@@ -1714,6 +1718,9 @@ def get_route_from_dicts(preds, dists, origenes, destino):
     return length, answer   
 
 
+
+
+
 class BinaryRandomSampling_p(Sampling):
 
     def __init__(self, prob=0.5):
@@ -1726,6 +1733,10 @@ class BinaryRandomSampling_p(Sampling):
     def _do(self, problem, n_samples, **kwargs):
         val = np.random.random((n_samples, problem.n_var))
         return (val < self.prob).astype(bool)
+    
+    
+    
+    
     
 class BinaryRandomSampling_n(Sampling):
 
@@ -1745,6 +1756,8 @@ class BinaryRandomSampling_n(Sampling):
             val[i][index] = 1
         
         return val.astype(bool)
+   
+   
     
 
 
@@ -1780,8 +1793,123 @@ class BitflipMutation_on(Mutation):
             Xp_mutated.append(x)
 
         return np.array(Xp_mutated)
+
+
+
+
+
+
+
+
+
+
+
+
+#  Funcion para identificar un elemento dominado
+def select_dominated(a,b):
+    """
+    Function to select the dominated element
     
+    Parameters
+    ----------
+    a : tuple
+        Tuple with the ID and the objective values of the first element
+    b : tuple
+        Tuple with the ID and the objective values of the second element
+        
+    Returns
+    -------
+    tuple
+        Tuple with the ID and the objective values of the dominated element
     
+    Based on: https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
+    
+    """
+    ge = all(map(operator.ge, a[1], b[1]))
+    le = all(map(operator.le, a[1], b[1]))
+    # return dominated
+    return b if le else a if ge else 'indifferent'
+
+# Función para obtener las soluciones no dominadas
+def paretoFront(a):
+    """
+    Function to get the non-dominated solutions
+    
+    Parameters
+    ----------
+    a : list
+        List of tuples with the ID and the objective values of the elements
+    
+    based on: https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
+    
+    """
+    b = copy(a)
+    if len(a) > 1:
+        for i in range(len(a)):
+            for j in range(i,len(a)):
+                if i != j:
+                    try:
+                        b.remove(select_dominated(a[i],a[j]))
+                    except:
+                        ""
+    return b
+
+
+# Función para obtener el frente de Pareto fusionado
+def merge_pareto_fronts(resultados):
+    """
+    Function to merge the Pareto fronts
+    
+    Parameters
+    ----------
+    resultados : list
+        List of the results of the optimization
+        
+    Returns
+    -------
+    merged_objectives : numpy.ndarray
+        Array with the merged objectives
+    merged_designs : numpy.ndarray
+        Array with the merged designs
+    
+    """
+    
+    objective_space = []
+    design_space = []
+    assigned = []
+    
+    for i in resultados:
+        res = i[1]
+        objective_space += res.F.tolist()
+        design_space += res.X.tolist()
+        
+        problem = i[2]
+        assigned += [problem.assign(sol)[0] for sol in res.X]
+        
+    
+    objective_space = [(i, r) for i, r in enumerate(objective_space)]
+    design_space = [(i, r) for i, r in enumerate(design_space)]
+    assigned_space = [(i, r) for i, r in enumerate(assigned)]
+    
+    merged_ind = paretoFront(objective_space)
+    indices = [i[0] for i in merged_ind]
+    
+    merged_objectives = np.array([objective_space[i][1] for i in indices])
+    merged_designs = np.array([design_space[i][1] for i in indices])
+    merged_assigned = np.array([assigned_space[i][1] for i in indices])
+    
+    sorted_args = np.argsort(merged_objectives[:,1])
+    
+    merged_objectives = merged_objectives[sorted_args]
+    merged_designs = merged_designs[sorted_args]
+    merged_assigned = merged_assigned[sorted_args]
+    
+    return merged_objectives, merged_designs, merged_assigned
+        
+        
+        
+        
+        
 
 
 # Función para obtener la ruta más corta desde un diccionario de predecesores,

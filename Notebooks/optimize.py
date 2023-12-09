@@ -345,7 +345,8 @@ def manejador_alarma(signum, frame):
 
 
 
-def exec_algorithm(entrada, returnData = False, timeout = 6, sh = False):
+def exec_algorithm(entrada, returnData = False, timeout = 6, sh = False, 
+                   returnDataProblem = False):
     # -----------------------------------------------------------------
     # PARÁMETROS DE ENTRADA
     # -----------------------------------------------------------------
@@ -468,14 +469,18 @@ def exec_algorithm(entrada, returnData = False, timeout = 6, sh = False):
         #print("HV", ind(pf))
         hipervolumen_inv = 1 - hipervolumen(pf)
 
-        if returnData:
+        if returnDataProblem:
+            return hipervolumen_inv, res, problem
+        elif returnData:
             return hipervolumen_inv, res
         else:
             sys.stdout.write(f' Best {hipervolumen_inv} ')
     
     # Si la ejecución no se completó, devuelve un 1
     else:
-        if returnData:
+        if returnDataProblem:
+            return 1, res, problem
+        elif returnData:
             return 1, res
         sys.stdout.write(f' Best 1')
 

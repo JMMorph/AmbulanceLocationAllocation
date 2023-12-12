@@ -2110,10 +2110,15 @@ def get_instance(path_source = '../GeoData/',
             cdmx.to_crs(4326, inplace=True)
             polygon = cdmx.geometry[0]
 
-            # Api key de TomTom
-            with open(path_source + 'tomtom_apikey.txt', 'r') as f:
-                apiKey = f.read()
-                f.close()
+            try:
+                # Api key de TomTom
+                with open(path_source + 'tomtom_apikey.txt', 'r') as f:
+                    apiKey = f.read()
+                    f.close()
+            except:
+                print('No se pudo leer el archivo con la API key de TomTom')
+                print('se debe crear un archivo "tomtom_apikey.txt" con la API key en: ', path_source)
+                return -1
                 
             zoom = 16
             imsize = 512
@@ -2387,6 +2392,329 @@ def get_instance(path_source = '../GeoData/',
     
     return instancia
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+def get_sol_info(reps, pf_as, pltbs, colapsos, nodos, origen_i_to_node, origen_node_to_i,
+                 destino_i_to_num, destino_num_to_node, demanda, rutas, bases_cmap, out, path_scenario,
+                 cdmx_layer, calles, alcaldias_layer, vis_preview = False, save_preview = False, seed_colors= 788284517):
+    '''
+    Función para obtener la información de las soluciones
+    
+    Parameters
+    ----------
+    reps : list
+        List of the indices of the solutions to be analyzed
+    pf_as : list
+        List of the solutions
+    pltbs : geopandas.GeoDataFrame
+        GeoDataFrame with the PLTBs
+    colapsos : geopandas.GeoDataFrame
+        GeoDataFrame with the demand points
+    nodos : geopandas.GeoDataFrame
+        GeoDataFrame with the nodes of the graph
+    origen_i_to_node : dict
+        Dictionary with the mapping from the index of the origin to the node ID
+    origen_node_to_i : dict
+        Dictionary with the mapping from the node ID to the index of the origin
+    destino_i_to_num : dict
+        Dictionary with the mapping from the index of the destination to the number of the demand point
+    destino_num_to_node : dict
+        Dictionary with the mapping from the number of the demand point to the node ID
+    demanda : list
+        List with the demand of each demand point
+    rutas : dict
+        Dictionary with the routes to each destination from each origin
+    bases_cmap : matplotlib.colors.LinearSegmentedColormap
+        Colormap to use for the bases
+    out : str
+        Name of the output files
+    path_scenario : str
+        Path to the scenario files
+    cdmx_layer : str
+        Name of the layer with the polygon of Mexico City
+    calles : geopandas.GeoDataFrame
+        GeoDataFrame with the streets graph
+    alcaldias_layer : str
+        Name of the layer with the boroughs of Mexico City
+    vis_preview : bool
+        If True, the preview of the solution is shown
+    save_preview : bool
+        If True, the preview of the solution is saved, if vis_preview is True
+    seed_colors : int
+        Seed for the colors of the bases
+        
+    Returns
+    -------
+    info_rutas : dict
+        Dictionary with the information of the routes
+    gdfs_rutas : list
+        List of the GeoDataFrames with the routes
+    gdfs_lineas : list
+        List of the GeoDataFrames with the lines instead of routes
+    gdfs_destinos : list
+        List of the GeoDataFrames with the demand points
+    gdfs_bases : list
+        List of the GeoDataFrames with the bases
+        
+        
+    
+    '''
+    
+    pltbs = copy(pltbs)
+    colapsos = copy(colapsos)
+    nodos = copy(nodos)
+    
+    ### ---------------- DEFINICIÓN DE COLORES ---------------- ###
+    
+    all_bases = set()
+    for asignacion in pf_as:
+        for b in asignacion:
+            all_bases.add(b)
+
+    all_bases = list(all_bases)
+
+    np.random.seed(seed_colors)
+    np.random.shuffle(all_bases)
+
+    colors_ind = bases_cmap([0.9*i/len(all_bases) for i in range(len(all_bases))])
+    map_all_colors = {all_bases[i]: tuple(c) for i,c in enumerate(colors_ind)}
+    
+    pltbs['color_grupo'] = pltbs.index.map(origen_node_to_i).map(map_all_colors)
+    
+    if type(reps) == int:
+        reps = [reps]
+    
+    info_rutas = dict()
+    
+    gdfs_rutas = []
+    gdfs_lineas = []
+    gdfs_destinos = []  
+    gdfs_bases = []
+    
+    
+    for ind_sol in reps:
+        ar = copy(pf_as[ind_sol])
+
+        bases, counts = np.unique(ar, return_counts=True)
+        grupos = {origen_i_to_node[base]:i for i,base in enumerate(bases)}
+        
+        num_to_grupo = dict()
+        for i,j in enumerate(ar):
+            num_to_grupo[destino_i_to_num[i]] = grupos[origen_i_to_node[j]]
+            
+        
+        destinos = [destino_i_to_num[i] for i in range(len(ar))]
+        gdf_destinos = colapsos.loc[destinos]
+        gdf_destinos['grupo'] = gdf_destinos.apply(lambda x: num_to_grupo[x.name], axis = 1)
+        gdf_destinos['color_grupo'] = gdf_destinos['grupo'].map({i:base for i,base in enumerate(bases)})
+        gdf_destinos['color_grupo'] = gdf_destinos['color_grupo'].map(map_all_colors)
+        
+        
+        demanda_dict = dict([(i, int(demanda[i])) for i in range(len(ar))])
+        gdf_destinos['demanda'] = gdf_destinos.index.map(demanda_dict)
+        
+        ambulancias_dict = {i:0 for i in bases}
+        for i,b in enumerate(ar):
+            ambulancias_dict[b] += demanda[i]
+        
+        bases = [origen_i_to_node[i] for i in bases]
+        gdf_bases = pltbs.loc[bases]
+        gdf_bases['grupo'] = gdf_bases.index.map(grupos)
+        gdf_bases['Asignados'] = gdf_bases.index.map({b:c for b,c in zip(bases,counts)})
+        gdf_bases['Ambulancias'] = gdf_bases.index.map(origen_node_to_i).map(ambulancias_dict)
+        
+        
+
+        gdf_rutas = dict()
+        gdf_lineas = dict()
+
+        
+        for j,i in enumerate(ar):
+            node_base = origen_i_to_node[i]
+            num_destino = destino_i_to_num[j]
+            
+            # Encuentra la ruta más corta de las dos posibles
+            # (Solo hace falta recuperarla, no calcularla)
+            node_destino = destino_num_to_node[num_destino][0]
+            df_ruta = rutas.get(node_destino, None)
+            dist_ruta, ruta = get_route_from_df(df_ruta,node_base)
+            
+            node_destino2 = destino_num_to_node[num_destino][1]
+            df_ruta2 = rutas.get(node_destino2, None)
+            dist_ruta2, ruta2 = get_route_from_df(df_ruta2,node_base)
+            
+            if ((dist_ruta2 > dist_ruta) and (dist_ruta2 < 1e9)) or (dist_ruta > 1e9):
+                dist_ruta = dist_ruta2
+                ruta = ruta2
+                node_destino = node_destino2
+                df_ruta = df_ruta2
+                
+            
+            ruta = [node_destino] + ruta
+            ruta_coords = [nodos.loc[i].geometry.coords[0] for i in ruta]
+            
+            
+            
+            if ar.tolist().count(i) == 1:
+                node_base_real = node_destino
+                ruta_geom = LineString([nodos.loc[node_base_real].geometry.coords[0]]*2)
+                linea_geom = LineString([nodos.loc[node_base_real].geometry.coords[0]]*2)
+
+                gdf_bases.loc[node_base,'geometry'] =  Point(nodos.loc[node_base_real].geometry.coords[0])
+                gdf_bases.loc[node_base,'lat'] = nodos.loc[node_base_real]['lat']
+                gdf_bases.loc[node_base,'lon'] = nodos.loc[node_base_real]['lon']
+                
+                
+            else:
+                node_base_real = node_base
+                ruta_geom = LineString(ruta_coords)
+                linea_geom = LineString([nodos.loc[node_base].geometry.coords[0], 
+                                    colapsos.loc[num_destino].geometry.coords[0]])
+            
+            ruta_info = {'geometry':ruta_geom,
+                        'distancia':dist_ruta,
+                        'base': node_base,
+                        'destino': num_destino,
+                        'grupo': grupos[node_base],
+                        'color_grupo': map_all_colors[i]}
+            
+            gdf_rutas[num_destino] = ruta_info
+            
+            lineas_info = {'geometry':linea_geom,
+                        'distancia':dist_ruta,
+                        'base': node_base,
+                        'destino': num_destino,
+                        'grupo': grupos[node_base],
+                        'color_grupo': map_all_colors[i]}
+            
+            gdf_lineas[num_destino] = lineas_info
+
+        gdf_rutas = pd.DataFrame.from_records([i for i in gdf_rutas.values()],index='destino')
+        gdf_rutas = gpd.GeoDataFrame(gdf_rutas, crs="EPSG:6369", geometry = 'geometry')
+        
+        gdf_lineas = pd.DataFrame.from_records([i for i in gdf_lineas.values()],index='base')
+        gdf_lineas = gpd.GeoDataFrame(gdf_lineas, crs="EPSG:6369", geometry = 'geometry')
+        
+        #gdf_bases.drop(columns=['color_grupo'], inplace=True)
+        gdf_bases.set_index('grupo', inplace=True)
+        
+        #gdf_destinos.drop(columns=['color_grupo'], inplace=True)
+        
+        
+        
+        sol_info = {'Sol':ind_sol+1,
+                    'f1':gdf_rutas['distancia'].sum(),
+                    'f2':len(bases),
+                    'rmax':gdf_rutas['distancia'].max(),
+                    'rmean':gdf_rutas['distancia'].mean(),
+                    'aislados':len(gdf_bases[gdf_bases['Asignados']==1]),
+                    'bmin':gdf_bases[gdf_bases['Asignados']>1]['Asignados'].min(),
+                    'bmax':gdf_bases['Asignados'].max()}
+        
+        info_rutas[ind_sol] = sol_info
+        
+        gdfs_rutas.append(gdf_rutas)
+        gdfs_lineas.append(gdf_lineas)
+        gdfs_destinos.append(gdf_destinos)
+        gdfs_bases.append(gdf_bases)
+        gdf_info= pd.DataFrame.from_records([i for i in info_rutas.values()],index='Sol')
+        gdf_info[['rmax','rmean','f1']] = gdf_info[['rmax','rmean','f1']].apply(lambda x: x.astype(float).round(1))
+        
+        
+        if vis_preview:
+            extra = 0.05
+            xmin, ymin, xmax, ymax = gdf_destinos.total_bounds
+            xmin, ymin, xmax, ymax = xmin-extra*(xmax-xmin), ymin-extra*(ymax-ymin), xmax+extra*(xmax-xmin), ymax+extra*(ymax-ymin)
+
+            fig, ax = plt.subplots(dpi=600,figsize=(5,5), constrained_layout=True)
+
+
+
+            # --------- Polígonos ----------------
+            # ------------------------------------
+            cdmx_layer.plot(color='none', edgecolor='k', alpha=1, zorder=0, ax =ax, lw=1)
+            alcaldias_layer.plot(color='none', edgecolor=(0,0,0,0.5), zorder=0, ax =ax,ls='--', lw=0.5)
+            #regiones_layer.plot(column='region', zorder=0, ax =ax, lw=1, facecolor='none',cmap='viridis')
+
+
+
+            # --------- Grafos ---------------
+            # --------------------------------
+            calles.plot(ax = ax, zorder=5, color = 'k', alpha=1, lw=0.01)
+
+
+
+            # --------- Rutas ----------------
+            # --------------------------------
+            colors = gdf_lineas['color_grupo'].tolist()
+            gdf_lineas.plot(ax = ax, zorder=1,lw=1.2, color='k', alpha=0.5)    
+            gdf_lineas.plot(ax = ax, zorder=1,lw=0.8, label='Asignaciones', color=colors)    
+            
+            
+
+            # -------- Destinos --------------
+            # --------------------------------
+            gdf_destinos.plot(ax = ax, zorder=5, color='k', markersize=34, marker='o', alpha=0.5)
+            colors = gdf_destinos['color_grupo'].tolist()
+            gdf_destinos.plot(ax = ax, zorder=6, markersize=20, marker='o', alpha=1, label='Colapsos',color=colors)
+
+
+            # --------- Bases ----------------
+            # --------------------------------
+            gdf_bases[gdf_bases['Asignados']==1].plot(ax = ax, zorder=1, markersize=400, marker='o',
+                                                    facecolor=(0,0,0,0),edgecolor='k', lw=1, label='Bases aisladas')
+            #gdf_bases[gdf_bases['Asignados']>1].plot(ax = ax, zorder=8, column='grupo', markersize=50, marker='s', alpha=1, cmap='Set2')
+            gdf_bases[gdf_bases['Asignados']>1].plot(ax = ax, zorder=9, markersize=30, marker='s', facecolor=(0,0,0,0), color = 'k', label='Bases')
+            
+            # Agregar etiquetas de número de bases asignadas
+            for idx, row in gdf_bases[gdf_bases['Asignados']>1].iterrows():
+                ax.annotate(text='\n'+str(row['Asignados'])+' ', xy=(row.geometry.x, row.geometry.y), ha='right', va='center',zorder=10, fontsize=11)
+
+
+            
+
+            ax.set_xlim([xmin,xmax])
+            ax.set_ylim([ymin,ymax])
+            #ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.1), ncols=4, frameon=False)
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_title('Solución '+str(ind_sol+1))
+            ax.grid(True, alpha=0.5, linestyle='--', linewidth=1, zorder=0)
+            
+            if save_preview:
+                fig.savefig(path_scenario+out+'_sol'+str(ind_sol+1)+'.png', dpi=300, bbox_inches='tight')
+                plt.close(fig)
+                
+    res = { 'info': copy(gdf_info),
+            'rutas': copy(gdfs_rutas),
+            'lineas': copy(gdfs_lineas),
+            'destinos': copy(gdfs_destinos),
+            'bases': copy(gdfs_bases)}
+    
+
+    return res
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
